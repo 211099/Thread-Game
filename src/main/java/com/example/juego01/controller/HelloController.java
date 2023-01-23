@@ -1,6 +1,7 @@
 package com.example.juego01.controller;
 
 import com.example.juego01.models.Carro;
+import com.example.juego01.models.Perro;
 import com.example.juego01.models.Posicion;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -18,6 +19,7 @@ public class HelloController implements Observer {
 
     private Carro C1;
     private Carro C2;
+    private Perro P1;
 
 
     @FXML
@@ -51,7 +53,9 @@ public class HelloController implements Observer {
 
     @FXML
     void ArribaOnMouse(MouseEvent event) {
-
+    P1.setArriba();
+    P1.setArriba(true);
+        System.out.println(idPerro.getLayoutY());
     }
 
     @FXML
@@ -69,6 +73,13 @@ public class HelloController implements Observer {
         hilo2.setDaemon(true);
         hilo2.start();
         C2.setPosicion(559,2);
+
+        P1 = new Perro(1);
+        P1.addObserver((this));
+        Thread hilo3 = new Thread(P1);
+        hilo3.setDaemon(true);
+        hilo3.start();
+        P1.setPosicion(554 ,3);
 
 
 
@@ -97,6 +108,9 @@ public class HelloController implements Observer {
                 break;
             case 2:
                 Platform.runLater(() ->  idRectangule2.setLayoutX(pos1.getX()));
+                break;
+            case 3:
+                Platform.runLater(() ->  idPerro.setLayoutY(pos1.getX()));
                 break;
         }
 
