@@ -1,11 +1,13 @@
 package com.example.juego01.controller;
 
+import com.example.juego01.HelloApplication;
 import com.example.juego01.models.Carro;
 import com.example.juego01.models.Perro;
 import com.example.juego01.models.Posicion;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.scene.layout.AnchorPane;
@@ -31,9 +33,9 @@ public class HelloController implements Observer {
     @FXML
     private Button idIniciar;
 
-    @FXML
-    private Circle idPerro;
 
+    @FXML
+    private ImageView idcapybara;
     @FXML
     private Button idReiniciar;
 
@@ -55,40 +57,45 @@ public class HelloController implements Observer {
     void ArribaOnMouse(MouseEvent event) {
     P1.setArriba();
     P1.setArriba(true);
-        System.out.println(idPerro.getLayoutY());
     }
 
     @FXML
     void IniciarOnMouse(MouseEvent event) {
         C1 = new Carro(1);
         C1.addObserver(this);
+        C1.setPosicion(2,1);
         Thread hilo1 = new Thread(C1);
         hilo1.setDaemon(true);
         hilo1.start();
-        C1.setPosicion(2,1);
+
 
         C2 = new Carro(2);
         C2.addObserver(this);
+        C2.setPosicion(559,2);
         Thread hilo2 = new Thread(C2);
         hilo2.setDaemon(true);
         hilo2.start();
-        C2.setPosicion(559,2);
+
 
         P1 = new Perro(1);
         P1.addObserver((this));
+        P1.setPosicion(520 ,3);
         Thread hilo3 = new Thread(P1);
         hilo3.setDaemon(true);
         hilo3.start();
-        P1.setPosicion(554 ,3);
 
 
-
+        System.out.println(idcapybara.getLayoutY());
 
 
     }
 
     @FXML
     void ReiniciarOnMouse(MouseEvent event) {
+        P1.setStatus(false);
+        C1.setStatus(false);
+        C2.setStatus(false);
+        P1.setPosicion(554 ,3);
 
     }
 
@@ -99,7 +106,7 @@ public class HelloController implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println(Thread.currentThread().getName());
+        //System.out.println(Thread.currentThread().getName());
         Posicion pos1 = (Posicion)arg;
 
         switch (pos1.getId()){
@@ -110,10 +117,31 @@ public class HelloController implements Observer {
                 Platform.runLater(() ->  idRectangule2.setLayoutX(pos1.getX()));
                 break;
             case 3:
-                Platform.runLater(() ->  idPerro.setLayoutY(pos1.getX()));
+                Platform.runLater(() ->  {
+                    idcapybara.setLayoutY(pos1.getX());
+                            HelloApplication.stage.sizeToScene();
+                }
+                    );
                 break;
         }
 
+        if (idcapybara.getBoundsInParent().intersects(idRectangule2.getBoundsInParent())){
+            P1.setStatus(false);
+            C1.setStatus(false);
+            C2.setStatus(false);
+        }
+
+        if (idcapybara.getBoundsInParent().intersects(idRectangule1.getBoundsInParent())){
+            P1.setStatus(false);
+            C1.setStatus(false);
+            C2.setStatus(false);
+        }
+
+        if (idcapybara.getLayoutY() <= 14){
+            P1.setStatus(false);
+            C1.setStatus(false);
+            C2.setStatus(false);
+        }
 
 
 
