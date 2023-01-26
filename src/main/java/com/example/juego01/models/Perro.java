@@ -36,11 +36,10 @@ public class Perro extends Observable implements Runnable {
             this.setChanged();
             this.notifyObservers(this.pos);
             try {
-                Thread.sleep(200);
+                Thread.sleep(10);
             } catch (InterruptedException e) {}
             if (arriba  == true){
                 pos.setX(pos.getX() - 9);
-                System.out.println("entre");
                 arriba = false;
             }
         }

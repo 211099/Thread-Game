@@ -24,7 +24,7 @@ public class Carro extends Observable implements Runnable {
             this.setChanged();
             this.notifyObservers(this.pos);
             try {
-                Thread.sleep(100);
+                Thread.sleep(50);
             } catch (InterruptedException e) {}
             pos.setX(pos.getX() + distanciax);
             if (pos.getX() >= 570)
